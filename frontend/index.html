@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Section</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Comment Section</h1>
+    <form id="commentForm">
+        <textarea id="commentText" placeholder="Write a comment..."></textarea>
+        <button type="submit">Submit</button>
+    </form>
+    <ul id="commentsList"></ul>
+
+    <script>
+        // Fetch comments from the server
+        async function fetchComments() {
+            const response = await fetch('/comments');
+            const comments = await response.json();
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = '';
+            comments.forEach(comment => {
+                const li = document.createElement('li');
+                li.textContent = comment.text;
+                commentsList.appendChild(li);
+            });
+        }
+
+        // Handle form submission
+        document.getElementById('commentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('commentText').value;
+            await fetch('/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text })
+            });
+            document.getElementById('commentText').value = '';
+            fetchComments();
+        });
+
+        fetchComments(); // Fetch comments on page load
+    </script>
+</body>
+</html>
