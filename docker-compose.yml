@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: nginx:alpine
+    image: molndal/azure_tenta-frontend
     ports:
       - 8081:80
     volumes:
@@ -17,7 +17,7 @@ services:
       - mongo
 
   mongo:
-    image: mongo:5.0
+    image: molndal/azure_tenta-mongodb
     volumes:
       - mongo_data:/data/db  # Volume for MongoDB data persistence
 
